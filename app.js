@@ -61,7 +61,7 @@ function generateCards() {
         const cardBack = document.createElement('div');
         cardBack.className = 'card-back';
         const backImg = document.createElement('img');
-        backImg.src = 'PIC/背面.PNG';
+        backImg.src = 'PIC/back.png';
         backImg.alt = '卡牌背面';
         cardBack.appendChild(backImg);
 
