@@ -1,0 +1,632 @@
+:root {
+  /* 神秘深色主題配色 */
+  --color-primary: hsl(270, 60%, 45%);
+  --color-primary-light: hsl(270, 60%, 60%);
+  --color-primary-dark: hsl(270, 60%, 30%);
+
+  --color-secondary: hsl(290, 70%, 50%);
+  --color-accent: hsl(320, 80%, 55%);
+  --color-gold: hsl(45, 100%, 60%);
+
+  --color-bg-dark: hsl(240, 20%, 8%);
+  --color-bg-medium: hsl(240, 15%, 12%);
+  --color-bg-light: hsl(240, 10%, 18%);
+
+  --color-text-primary: hsl(0, 0%, 95%);
+  --color-text-secondary: hsl(0, 0%, 75%);
+  --color-text-muted: hsl(0, 0%, 55%);
+
+  /* 漸變 */
+  --gradient-primary: linear-gradient(135deg,
+      hsl(270, 60%, 35%) 0%,
+      hsl(290, 70%, 40%) 50%,
+      hsl(320, 80%, 45%) 100%);
+
+  --gradient-card: linear-gradient(145deg,
+      hsla(270, 60%, 25%, 0.5) 0%,
+      hsla(290, 70%, 30%, 0.3) 100%);
+
+  /* 陰影 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(180, 100, 255, 0.3);
+
+  /* 間距 */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* 字型 */
+  --font-primary: 'Inter', 'Noto Sans TC', sans-serif;
+  --font-display: 'Cinzel', 'Noto Serif TC', serif;
+
+  /* 動畫 */
+  --transition-fast: 0.15s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.6s ease;
+
+  /* 尺寸 */
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 動態背景 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 30%, hsla(270, 60%, 35%, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, hsla(320, 80%, 45%, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, hsla(290, 70%, 40%, 0.1) 0%, transparent 70%);
+  z-index: -1;
+  animation: bgShift 20s ease infinite;
+}
+
+@keyframes bgShift {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* 標題區域 */
+header {
+  text-align: center;
+  padding: var(--spacing-md) var(--spacing-md);
+  position: relative;
+  z-index: 10;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--spacing-xs);
+  animation: titleGlow 3s ease infinite;
+}
+
+@keyframes titleGlow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(180, 100, 255, 0.3));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px rgba(180, 100, 255, 0.6));
+  }
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  margin-bottom: var(--spacing-sm);
+}
+
+.start-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-medium);
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.start-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--transition-slow);
+}
+
+.start-btn:hover::before {
+  left: 100%;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 手勢狀態指示器 */
+.gesture-indicator {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  z-index: 100;
+  transition: all var(--transition-medium);
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.gesture-indicator.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.gesture-indicator.detecting {
+  background: linear-gradient(90deg,
+      hsla(270, 60%, 45%, 0.5) 0%,
+      hsla(320, 80%, 55%, 0.5) 100%);
+  box-shadow: 0 0 20px rgba(180, 100, 255, 0.6);
+  animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05) translateX(0);
+    opacity: 0.9;
+  }
+}
+
+.gesture-icon {
+  font-size: 1.3rem;
+}
+
+.gesture-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 塔羅牌展示區 - 攟開在桌面的感覺 */
+.tarot-carousel {
+  height: calc(100vh - 240px);
+  max-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  margin: 0;
+  padding: var(--spacing-md);
+  perspective: 1000px;
+}
+
+.carousel-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-xs);
+  max-width: 1400px;
+  width: 100%;
+  padding: var(--spacing-sm);
+  transform-style: preserve-3d;
+}
+
+.tarot-card {
+  width: 100%;
+  aspect-ratio: 2/3;
+  min-height: 180px;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  position: relative;
+  opacity: 0.7;
+  transform: scale(0.96) rotateX(8deg);
+}
+
+/* 為每張卡片添加輕微的隨機旋轉，模擬攟開的效果 */
+.tarot-card:nth-child(odd) {
+  transform: scale(0.96) rotateX(8deg) rotateZ(-1.5deg);
+}
+
+.tarot-card:nth-child(even) {
+  transform: scale(0.96) rotateX(8deg) rotateZ(1.5deg);
+}
+
+.tarot-card:nth-child(3n) {
+  transform: scale(0.96) rotateX(8deg) rotateZ(0.8deg);
+}
+
+.tarot-card.selected {
+  opacity: 1;
+  transform: scale(1.15) rotateX(0deg) rotateZ(0deg) translateY(-15px);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.9),
+    var(--shadow-lg);
+  z-index: 10;
+  border: 3px solid var(--color-gold);
+  animation: cardPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.6),
+      0 0 40px rgba(255, 215, 0, 0.9),
+      var(--shadow-lg);
+  }
+
+  50% {
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.8),
+      0 0 50px rgba(255, 215, 0, 1),
+      var(--shadow-lg);
+  }
+}
+
+.tarot-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--color-gold);
+  color: var(--color-bg-dark);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 20;
+  animation: checkmark 0.3s ease;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.tarot-card.flipping {
+  animation: cardFlip 1s ease forwards;
+}
+
+@keyframes cardFlip {
+  0% {
+    transform: rotateY(0deg) scale(1.08);
+  }
+
+  50% {
+    transform: rotateY(90deg) scale(1.15);
+  }
+
+  100% {
+    transform: rotateY(180deg) scale(1.08);
+  }
+}
+
+.card-back,
+.card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-back {
+  background: var(--gradient-primary);
+  border: 2px solid var(--color-gold);
+}
+
+.card-back-pattern {
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(45deg,
+      transparent,
+      transparent 8px,
+      rgba(255, 255, 255, 0.05) 8px,
+      rgba(255, 255, 255, 0.05) 16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--color-gold);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.card-front {
+  background: white;
+  transform: rotateY(180deg);
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 牌義資訊面板 */
+.info-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-md);
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-panel.visible {
+  transform: translateY(0);
+}
+
+.info-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.card-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-name-en {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+  font-style: italic;
+}
+
+.card-meaning {
+  background: rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-gold);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-height: 150px;
+  overflow-y: auto;
+  font-size: 0.95rem;
+}
+
+/* 導航提示 */
+.nav-hints {
+  position: fixed;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  animation: fadeInOut 3s ease-in-out 1s;
+}
+
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.hint {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* 教學覆蓋層 */
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+  visibility: visible;
+  transition: all var(--transition-slow);
+}
+
+.tutorial-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tutorial-content {
+  max-width: 800px;
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.tutorial-content h2 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--spacing-lg);
+}
+
+.tutorial-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.step {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  transition: all var(--transition-medium);
+}
+
+.step:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.step h3 {
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.step p {
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.tutorial-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-medium);
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.tutorial-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .carousel-track {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: var(--spacing-xs);
+  }
+
+  .tarot-card {
+    min-height: 165px;
+  }
+
+  .card-name {
+    font-size: 1.4rem;
+  }
+
+  .tutorial-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .gesture-indicator {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-track {
+    grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  }
+
+  .nav-hints {
+    display: none;
+  }
+}
