@@ -423,6 +423,13 @@ function drawCard() {
     infoPanel.classList.add('visible');
     updateGestureStatus('👌', 'OK手勢收起卡片');
 
+    // 手機上確保牌義可見
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 100);
+
     isDrawing = false;
 }
 
