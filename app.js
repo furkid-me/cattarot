@@ -458,9 +458,10 @@ function collectCard() {
     }
     collectedCard.appendChild(img);
 
-    // 點擊收集的卡片可以查看詳情
-    collectedCard.addEventListener('click', () => {
-        alert(`${selectedCard.name} (${isReversed ? '逆位' : '正位'})\n\n${isReversed ? selectedCard.reversedMeaning : selectedCard.meaning}`);
+    // 點擊收集的卡片可以放大查看
+    collectedCard.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showCardModal(selectedCard, isReversed);
     });
 
     collectedCards.appendChild(collectedCard);
@@ -497,6 +498,29 @@ document.addEventListener('click', (e) => {
     if (isCardDrawn && !e.target.closest('.tarot-card:not(.drawn)')) {
         slideAwayCard();
     }
+});
+
+// 顯示卡片放大模態框
+function showCardModal(card, isReversed) {
+    const modal = document.getElementById('cardModal');
+    const modalImage = document.getElementById('modalCardImage');
+    const modalName = document.getElementById('modalCardName');
+    const modalNameEn = document.getElementById('modalCardNameEn');
+    const modalMeaning = document.getElementById('modalCardMeaning');
+
+    modalImage.src = getCardImage(card.id);
+    modalImage.alt = card.name;
+    modalImage.style.transform = isReversed ? 'rotate(180deg)' : 'rotate(0deg)';
+    modalName.textContent = card.name + (isReversed ? ' (逆位)' : ' (正位)');
+    modalNameEn.textContent = card.nameEn + (isReversed ? ' - Reversed' : ' - Upright');
+    modalMeaning.textContent = isReversed ? card.reversedMeaning : card.meaning;
+
+    modal.classList.add('visible');
+}
+
+// 點擊模態框關閉
+document.getElementById('cardModal').addEventListener('click', () => {
+    document.getElementById('cardModal').classList.remove('visible');
 });
 
 console.log('%c🐱 貓咪塔羅牌已載入', 'font-size: 20px; color: #B464FF; font-weight: bold;');
