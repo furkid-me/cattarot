@@ -282,8 +282,9 @@ function detectGesture(landmarks) {
 
     const extendedCount = Object.values(fingers).filter(v => v).length;
 
-    // OK 手勢：拇指食指靠近 + 其他三指伸直
-    if (thumbIndexDist < 0.04 && fingers.middle && fingers.ring && fingers.pinky) {
+    // OK 手勢：拇指食指靠近 + 至少兩指伸直
+    const otherFingersExtended = [fingers.middle, fingers.ring, fingers.pinky].filter(v => v).length;
+    if (thumbIndexDist < 0.06 && otherFingersExtended >= 2) {
         return 'ok';
     }
 
@@ -330,7 +331,7 @@ function detectShakeGesture(handX) {
 let fistDetectedTime = 0;
 let okDetectedTime = 0;
 const FIST_HOLD_TIME = 600; // 握拳需要保持 600ms
-const OK_HOLD_TIME = 600; // OK手勢需要保持 600ms
+const OK_HOLD_TIME = 350; // OK手勢需要保持 350ms
 
 function handleGesture(gesture, landmarks) {
     const currentTime = Date.now();
