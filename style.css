@@ -433,12 +433,14 @@ h1 {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
   opacity: 1;
   visibility: visible;
   transition: all var(--transition-slow);
+  overflow-y: auto;
+  padding: var(--spacing-lg) 0;
 }
 
 .tutorial-overlay.hidden {
