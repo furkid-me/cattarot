@@ -90,9 +90,14 @@
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    transform: rotateY(0deg) !important;
+    transform: none !important;
     backface-visibility: visible !important;
     border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .tarot-card.drawn .card-front img {
@@ -100,6 +105,9 @@
     height: 100% !important;
     object-fit: cover !important;
     border-radius: 10px !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* 滑走動畫 */
