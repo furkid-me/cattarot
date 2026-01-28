@@ -267,14 +267,10 @@ let gestureStartTime = 0;
 let lastGesture = 'none';
 
 function detectGesture(landmarks) {
-    // 檢測 OK 手勢（拇指和食指指尖靠近）
+    // 檢測 OK 手勢（拇指和食指指尖靠近，其他手指伸直）
     const thumbTip = landmarks[4];
     const indexTip = landmarks[8];
     const thumbIndexDist = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
-
-    if (thumbIndexDist < 0.05) {
-        return 'ok';
-    }
 
     const fingers = {
         thumb: isFingerExtended(landmarks, 4, 3, 2),
@@ -286,9 +282,15 @@ function detectGesture(landmarks) {
 
     const extendedCount = Object.values(fingers).filter(v => v).length;
 
-    if (extendedCount <= 2) {
+    // OK 手勢：拇指食指靠近 + 其他三指伸直
+    if (thumbIndexDist < 0.04 && fingers.middle && fingers.ring && fingers.pinky) {
+        return 'ok';
+    }
+
+    // 握拳：只有 0-1 根手指伸出
+    if (extendedCount <= 1) {
         return 'fist';
-    } else if (extendedCount >= 3) {
+    } else if (extendedCount >= 4) {
         return 'open';
     }
 
@@ -327,8 +329,8 @@ function detectShakeGesture(handX) {
 
 let fistDetectedTime = 0;
 let okDetectedTime = 0;
-const FIST_HOLD_TIME = 150; // 握拳需要保持 150ms
-const OK_HOLD_TIME = 200; // OK手勢需要保持 200ms
+const FIST_HOLD_TIME = 600; // 握拳需要保持 600ms
+const OK_HOLD_TIME = 600; // OK手勢需要保持 600ms
 
 function handleGesture(gesture, landmarks) {
     const currentTime = Date.now();
